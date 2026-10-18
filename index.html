@@ -3,207 +3,89 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LegisCore AI | Legal Associate</title>
+<title>LegisCore AI | The Future of Legal Work</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0a0a; --surface: #121212; --surface-2: #1a1a1a;
-  --border: rgba(255,255,255,0.08); --text: #ededed; --muted: #888;
-  --accent: #3b82f6; --accent-glow: rgba(59, 130, 246, 0.15);
+  --bg: #050505; --surface: #111; --border: rgba(255,255,255,0.1);
+  --text: #fff; --muted: #a1a1aa; --accent: #3b82f6; --accent-glow: rgba(59, 130, 246, 0.2);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; height: 100vh; display: flex; overflow: hidden; }
-h1, h2, h3, .brand { font-family: 'Plus Jakarta Sans', sans-serif; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
+h1, h2, h3, .brand { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; }
+a { text-decoration: none; color: inherit; }
 
-/* Sidebar */
-.sidebar { width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px; }
-.brand { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+/* Nav */
+nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 100; }
+.brand { font-size: 1.25rem; font-weight: 800; }
 .brand span { color: var(--accent); }
-.nav-item { padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; color: var(--muted); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 12px; transition: 0.2s; }
-.nav-item:hover, .nav-item.active { background: var(--surface-2); color: #fff; }
-.nav-item.active { border-left: 3px solid var(--accent); }
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; border-radius: 8px; font-weight: 600; transition: 0.3s; cursor: pointer; border: none; font-size: 1rem; }
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 20px var(--accent-glow); }
+.btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--accent); }
 
-/* Main Content */
-.main { flex: 1; display: flex; flex-direction: column; background: radial-gradient(circle at top right, var(--accent-glow), transparent 40%); }
-.header { height: 70px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
-.status { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); }
-.dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
+/* Hero */
+.hero { padding: 160px 5% 100px; text-align: center; background: radial-gradient(circle at top, var(--accent-glow), transparent 50%); }
+.hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; margin-bottom: 24px; }
+.hero h1 span { background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; color: transparent; }
+.hero p { font-size: 1.2rem; color: var(--muted); max-width: 600px; margin: 0 auto 40px; }
+.hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
-/* Dashboard Area */
-.dashboard { padding: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; overflow-y: auto; }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; }
-.card h3 { font-size: 1.1rem; margin-bottom: 16px; color: #fff; }
-.card p { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+/* Features */
+.features { padding: 100px 5%; background: var(--surface); border-top: 1px solid var(--border); }
+.features h2 { text-align: center; font-size: 2.5rem; margin-bottom: 60px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
+.card { background: var(--bg); padding: 40px; border-radius: 16px; border: 1px solid var(--border); transition: 0.3s; }
+.card:hover { border-color: var(--accent); transform: translateY(-5px); }
+.icon { width: 50px; height: 50px; background: var(--accent-glow); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 24px; color: var(--accent); }
+.card h3 { font-size: 1.25rem; margin-bottom: 12px; }
+.card p { color: var(--muted); font-size: 0.95rem; }
 
-/* File Drop Zone */
-.drop-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 30px; text-align: center; transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
-.drop-zone:hover { border-color: var(--accent); background: var(--accent-glow); }
-.drop-icon { font-size: 2rem; margin-bottom: 10px; }
-
-/* AI Chat */
-.chat-container { display: flex; flex-direction: column; height: 100%; }
-.chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
-.msg { max-width: 85%; padding: 14px 18px; border-radius: 12px; font-size: 0.9rem; line-height: 1.5; }
-.msg.ai { background: var(--surface-2); border: 1px solid var(--border); border-bottom-left-radius: 4px; align-self: flex-start; }
-.msg.user { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
-.chat-input { display: flex; gap: 10px; }
-.chat-input input { flex: 1; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; color: #fff; font-family: inherit; outline: none; transition: 0.2s; }
-.chat-input input:focus { border-color: var(--accent); }
-.chat-input button { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0 20px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-.chat-input button:hover { filter: brightness(1.1); }
+/* Footer */
+footer { text-align: center; padding: 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; }
 </style>
 </head>
 <body>
 
-<div class="sidebar">
+<nav>
   <div class="brand"><span>Legis</span>Core AI</div>
-  <div class="nav-item active">🤖 AI Associate</div>
-  <div class="nav-item">📁 Document Vault</div>
-  <div class="nav-item">⚖️ Case Files</div>
-  <div class="nav-item">⚙️ Settings</div>
-</div>
+  <a href="app.html" class="btn btn-outline">Launch Demo</a>
+</nav>
 
-<div class="main">
-  <div class="header">
-    <h2>Workspace</h2>
-    <div class="status"><div class="dot"></div> AI Model Connected</div>
+<section class="hero">
+  <h1>The AI Associate for <br><span>Modern Law Firms.</span></h1>
+  <p>Upload contracts, extract key risks, and draft legal documents in seconds. Built for Nigerian law firms that value speed and precision.</p>
+  <div class="hero-actions">
+    <a href="app.html" class="btn btn-primary">Launch Interactive Demo &rarr;</a>
+    <a href="#features" class="btn btn-outline">See Capabilities</a>
   </div>
+</section>
 
-  <div class="dashboard">
-    <!-- Left Side: Documents -->
+<section class="features" id="features">
+  <h2>Designed for Legal Excellence</h2>
+  <div class="grid">
     <div class="card">
-      <h3>Document Context</h3>
-      <p style="margin-bottom: 20px;">Upload a legal document (PDF, DOCX) for the AI to analyze.</p>
-      <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-        <input type="file" id="fileInput" hidden>
-        <div class="drop-icon" id="dropIcon">📄</div>
-        <div id="dropText" style="font-weight: 600; margin-bottom: 5px;">Click or Drag to Upload</div>
-        <div id="dropSubtext" style="font-size: 0.8rem; color: var(--muted);">Max file size: 50MB</div>
-      </div>
+      <div class="icon">📄</div>
+      <h3>Contract Analysis</h3>
+      <p>Instantly identify hidden risks, unlimited liability clauses, and non-compete provisions in complex agreements.</p>
     </div>
-
-    <!-- Right Side: AI Chat -->
     <div class="card">
-      <h3>AI Legal Associate</h3>
-      <div class="chat-container">
-        <div class="chat-messages" id="chatMessages">
-          <div class="msg ai">Hello Counselor. I am ready to review your contracts, summarize case law, or draft legal notices. How can I assist you today?</div>
-        </div>
-        <div class="chat-input">
-          <input type="text" id="chatInput" placeholder="Ask about a contract, case, or legal clause..." autocomplete="off">
-          <button id="sendBtn">Send</button>
-        </div>
-      </div>
+      <div class="icon">⚡</div>
+      <h3>Instant Summaries</h3>
+      <p>Generate executive summaries of 50-page case files or service agreements in under 3 seconds.</p>
+    </div>
+    <div class="card">
+      <div class="icon">✍️</div>
+      <h3>Drafting Assistant</h3>
+      <p>Draft NDAs, legal notices, and standard clauses based on Nigerian legal precedents.</p>
     </div>
   </div>
-</div>
+</section>
 
+<footer>
+  &copy; 2026 LegisCore AI. A concept by OProducts Studio.
+</footer>
 
-<script>
-// === DOCUMENT UPLOAD SIMULATION ===
-const dropZone = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
-const dropIcon = document.getElementById('dropIcon');
-const dropText = document.getElementById('dropText');
-const dropSubtext = document.getElementById('dropSubtext');
-const chatMessages = document.getElementById('chatMessages');
-const chatInput = document.getElementById('chatInput');
-const sendBtn = document.getElementById('sendBtn');
-
-let documentUploaded = false;
-
-function simulateUpload(fileName) {
-  dropIcon.innerText = '⏳';
-  dropText.innerText = 'Analyzing document...';
-  dropSubtext.innerText = fileName;
-  
-  setTimeout(() => {
-    dropIcon.innerText = '✅';
-    dropText.innerText = 'Document Loaded';
-    dropSubtext.innerText = 'Ready for AI review';
-    documentUploaded = true;
-    
-    // Add AI message confirming upload
-    addMessage('ai', `I have successfully processed <b>${fileName}</b>. I have extracted the key parties, dates, and obligations. What would you like me to do with this document?`);
-  }, 2000);
-}
-
-fileInput.addEventListener('change', (e) => {
-  if (e.target.files.length > 0) {
-    simulateUpload(e.target.files[0].name);
-  }
-});
-
-dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
-dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'var(--border)'; });
-dropZone.addEventListener('drop', (e) => {
-  e.preventDefault();
-  dropZone.style.borderColor = 'var(--border)';
-  if (e.dataTransfer.files.length > 0) {
-    simulateUpload(e.dataTransfer.files[0].name);
-  }
-});
-
-// === AI CHAT SIMULATION ===
-function addMessage(sender, text) {
-  const msgDiv = document.createElement('div');
-  msgDiv.className = `msg ${sender}`;
-  msgDiv.innerHTML = text;
-  chatMessages.appendChild(msgDiv);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function generateAIResponse(userText) {
-  const text = userText.toLowerCase();
-  
-  if (text.includes('summar') || text.includes('overview')) {
-    return "Here is a brief summary: This appears to be a standard Service Agreement. The term is 12 months with automatic renewal. The governing law is the State of Adamawa, Nigeria. Key risk: Clause 4.2 contains an unlimited liability clause which I recommend revising.";
-  } 
-  if (text.includes('risk') || text.includes('clause')) {
-    return "I have scanned the document for risks. I found 3 high-risk clauses:<br><br>1. <b>Unlimited Liability</b> (Section 4.2)<br>2. <b>Non-Compete</b> (Section 7.1) - Scope is overly broad.<br>3. <b>Termination</b> (Section 9) - Requires 90 days notice. <br><br>Would you like me to draft revised language for these?";
-  }
-  if (text.includes('draft') || text.includes('write')) {
-    return "I can draft that. Here is a standard non-disclosure clause you can insert: <br><br><i>'The Receiving Party agrees to hold all Confidential Information in strict confidence and not to disclose it to any third parties without prior written consent.'</i>";
-  }
-  if (text.includes('hello') || text.includes('hi')) {
-    return "Hello! I am your LegisCore AI Associate. You can upload a document on the left, or ask me general legal questions.";
-  }
-  
-  return "I have analyzed your request against the current document context. Based on Nigerian legal precedents, I recommend a closer review of the indemnification clauses. Is there a specific section you want me to focus on?";
-}
-
-function handleSend() {
-  const text = chatInput.value.trim();
-  if (!text) return;
-  
-  // Add user message
-  addMessage('user', text);
-  chatInput.value = '';
-  
-  // Show typing indicator
-  const typingId = 'typing-' + Date.now();
-  const typingDiv = document.createElement('div');
-  typingDiv.className = 'msg ai';
-  typingDiv.id = typingId;
-  typingDiv.innerHTML = '<i>LegisCore AI is thinking...</i>';
-  chatMessages.appendChild(typingDiv);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-  
-  // Generate response after delay
-  setTimeout(() => {
-    document.getElementById(typingId).remove();
-    let response = generateAIResponse(text);
-    if (!documentUploaded && (text.includes('summar') || text.includes('risk') || text.includes('clause'))) {
-      response = "Please upload a document on the left first so I can analyze it for you. I cannot review a document I haven't seen.";
-    }
-    addMessage('ai', response);
-  }, 1500);
-}
-
-sendBtn.addEventListener('click', handleSend);
-chatInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') handleSend();
-});
-</script>
 </body>
 </html>

@@ -12,135 +12,130 @@
   --accent: #3b82f6; --accent-glow: rgba(59, 130, 246, 0.15);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; height: 100vh; display: flex; overflow: hidden; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
 h1, h2, h3, .brand { font-family: 'Plus Jakarta Sans', sans-serif; }
 
-/* Sidebar */
-.sidebar { width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px; }
-.brand { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+/* Header & Nav */
+header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+.brand { font-size: 1.1rem; font-weight: 800; color: #fff; }
 .brand span { color: var(--accent); }
-.nav-item { padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; color: var(--muted); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 12px; transition: 0.2s; }
-.nav-item:hover, .nav-item.active { background: var(--surface-2); color: #fff; }
-.nav-item.active { border-left: 3px solid var(--accent); }
+.header-actions { display: flex; align-items: center; gap: 12px; }
+.btn-update { background: transparent; border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+.status { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--muted); }
+.dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
 
-/* Main Content */
-.main { flex: 1; display: flex; flex-direction: column; background: radial-gradient(circle at top right, var(--accent-glow), transparent 40%); }
-.header { height: 70px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
-.status { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); }
-.dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
+/* Main Container */
+.container { padding: 20px; display: flex; flex-direction: column; gap: 20px; max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; }
 
-/* Dashboard Area */
-.dashboard { padding: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; overflow-y: auto; }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; }
-.card h3 { font-size: 1.1rem; margin-bottom: 16px; color: #fff; }
-.card p { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+/* Cards */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; }
+.card h3 { font-size: 1rem; margin-bottom: 12px; color: #fff; }
+.card p { color: var(--muted); font-size: 0.85rem; margin-bottom: 16px; }
 
 /* File Drop Zone */
-.drop-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 30px; text-align: center; transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+.drop-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 20px; text-align: center; transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 140px; }
 .drop-zone:hover { border-color: var(--accent); background: var(--accent-glow); }
-.drop-icon { font-size: 2rem; margin-bottom: 10px; }
+.drop-icon { font-size: 1.5rem; margin-bottom: 8px; }
 
 /* AI Chat */
-.chat-container { display: flex; flex-direction: column; height: 100%; }
-.chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
-.msg { max-width: 85%; padding: 14px 18px; border-radius: 12px; font-size: 0.9rem; line-height: 1.5; }
+.chat-container { display: flex; flex-direction: column; height: 400px; }
+.chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; padding-right: 5px; }
+.msg { max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 0.85rem; line-height: 1.5; }
 .msg.ai { background: var(--surface-2); border: 1px solid var(--border); border-bottom-left-radius: 4px; align-self: flex-start; }
 .msg.user { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
-.chat-input { display: flex; gap: 10px; }
-.chat-input input { flex: 1; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; color: #fff; font-family: inherit; outline: none; transition: 0.2s; }
+.chat-input { display: flex; gap: 8px; }
+.chat-input input { flex: 1; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: #fff; font-family: inherit; outline: none; font-size: 16px; }
 .chat-input input:focus { border-color: var(--accent); }
-.chat-input button { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0 20px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-.chat-input button:hover { filter: brightness(1.1); }
+.chat-input button { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0 16px; font-weight: 600; cursor: pointer; }
+
+@media (min-width: 768px) {
+  .container { display: grid; grid-template-columns: 300px 1fr; align-items: start; }
+  .chat-container { height: 500px; }
+}
 </style>
 </head>
 <body>
 
-<div class="sidebar">
+<header>
   <div class="brand"><span>Legis</span>Core AI</div>
-  <div class="nav-item active">🤖 AI Associate</div>
-  <div class="nav-item">📁 Document Vault</div>
-  <div class="nav-item">⚖️ Case Files</div>
-  <div class="nav-item">⚙️ Settings</div>
-</div>
+  <div class="header-actions">
+    <button onclick="clearAppCache()" class="btn-update">Update App</button>
+    <div class="status"><div class="dot"></div> AI Connected</div>
+  </div>
+</header>
 
-<div class="main">
-  <div class="header">
-    <h2>Workspace</h2>
-    <div style="display:flex; align-items:center; gap:20px;"><button onclick="clearAppCache()" style="background:transparent; border:1px solid var(--border); color:#fff; padding:8px 16px; border-radius:8px; cursor:pointer; font-family:inherit;">Update App</button><div class="status"><div class="dot"></div> AI Model Connected</div></div>
+<div class="container">
+  <!-- Left: Upload -->
+  <div class="card">
+    <h3>Document Context</h3>
+    <p>Upload a legal document for the AI to analyze.</p>
+    <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+      <input type="file" id="fileInput" hidden>
+      <div class="drop-icon" id="dropIcon">📄</div>
+      <div id="dropText" style="font-weight: 600; margin-bottom: 4px;">Click to Upload</div>
+      <div id="dropSubtext" style="font-size: 0.75rem; color: var(--muted);">Max 50MB</div>
+    </div>
   </div>
 
-  <div class="dashboard">
-    <!-- Left Side: Documents -->
-    <div class="card">
-      <h3>Document Context</h3>
-      <p style="margin-bottom: 20px;">Upload a legal document (PDF, DOCX) for the AI to analyze.</p>
-      <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-        <input type="file" id="fileInput" hidden>
-        <div class="drop-icon" id="dropIcon">📄</div>
-        <div id="dropText" style="font-weight: 600; margin-bottom: 5px;">Click or Drag to Upload</div>
-        <div id="dropSubtext" style="font-size: 0.8rem; color: var(--muted);">Max file size: 50MB</div>
+  <!-- Right: Chat -->
+  <div class="card">
+    <h3>AI Legal Associate</h3>
+    <div class="chat-container">
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg ai">Hello Counselor. I am your LegisCore AI Assistant, connected to Google Gemini. How can I help you today?</div>
       </div>
-    </div>
-
-    <!-- Right Side: AI Chat -->
-    <div class="card">
-      <h3>AI Legal Associate</h3>
-      <div class="chat-container">
-        <div class="chat-messages" id="chatMessages">
-          <div class="msg ai">Hello Counselor. I am ready to review your contracts, summarize case law, or draft legal notices. How can I assist you today?</div>
-        </div>
-        <div class="chat-input">
-          <input type="text" id="chatInput" placeholder="Ask about a contract, case, or legal clause..." autocomplete="off">
-          <button id="sendBtn">Send</button>
-        </div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Ask a legal question..." autocomplete="off">
+        <button id="sendBtn">Send</button>
       </div>
     </div>
   </div>
 </div>
-
 
 <script>
-// === DOCUMENT UPLOAD SIMULATION ===
+// === CLEAR CACHE ===
+async function clearAppCache() {
+  if ('caches' in window) {
+    const keys = await caches.keys();
+    for (let k of keys) await caches.delete(k);
+  }
+  window.location.reload(true);
+}
+
+// === DOCUMENT UPLOAD ===
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
 const dropIcon = document.getElementById('dropIcon');
 const dropText = document.getElementById('dropText');
 const dropSubtext = document.getElementById('dropSubtext');
-const chatMessages = document.getElementById('chatMessages');
-const chatInput = document.getElementById('chatInput');
-const sendBtn = document.getElementById('sendBtn');
-
 let documentUploaded = false;
 
 function simulateUpload(fileName) {
   dropIcon.innerText = '⏳';
-  dropText.innerText = 'Analyzing document...';
+  dropText.innerText = 'Analyzing...';
   dropSubtext.innerText = fileName;
-  
   setTimeout(() => {
     dropIcon.innerText = '✅';
     dropText.innerText = 'Document Loaded';
     dropSubtext.innerText = 'Ready for AI review';
     documentUploaded = true;
-    
-    addMessage('ai', `I have successfully processed <b>${fileName}</b>. I have extracted the key parties, dates, and obligations. What would you like me to do with this document?`);
-  }, 2000);
+    addMessage('ai', `I have loaded <b>${fileName}</b>. You can now ask me to summarize it or extract risks.`);
+  }, 1500);
 }
 
-fileInput.addEventListener('change', (e) => {
-  if (e.target.files.length > 0) simulateUpload(e.target.files[0].name);
-});
-
+fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) simulateUpload(e.target.files[0].name); });
 dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
 dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'var(--border)'; });
 dropZone.addEventListener('drop', (e) => {
-  e.preventDefault();
-  dropZone.style.borderColor = 'var(--border)';
+  e.preventDefault(); dropZone.style.borderColor = 'var(--border)';
   if (e.dataTransfer.files.length > 0) simulateUpload(e.dataTransfer.files[0].name);
 });
 
-// === REAL AI CHAT LOGIC (Connected to Google Apps Script) ===
+// === REAL AI CHAT ===
 const API_URL = 'https://script.google.com/macros/s/AKfycbx1ZzD-ze1IjU2AvDxAyPrwWazL6rqSbPYlJnnKVaQIRe7T_za41yDWF4nzjmn0L3fSsA/exec';
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const sendBtn = document.getElementById('sendBtn');
 
 function addMessage(sender, text) {
   const msgDiv = document.createElement('div');
@@ -154,59 +149,51 @@ async function handleSend() {
   const text = chatInput.value.trim();
   if (!text) return;
   
-  // Add user message
   addMessage('user', text);
   chatInput.value = '';
   
-  // Show typing indicator
   const typingId = 'typing-' + Date.now();
   const typingDiv = document.createElement('div');
   typingDiv.className = 'msg ai';
   typingDiv.id = typingId;
-  typingDiv.innerHTML = '<i>LegisCore AI is typing...</i>';
+  typingDiv.innerHTML = '<i>AI is thinking...</i>';
   chatMessages.appendChild(typingDiv);
   chatMessages.scrollTop = chatMessages.scrollHeight;
   
-  // Build the prompt with a system persona
-  const systemPrompt = "You are LegisCore AI, an expert legal associate for Nigerian law firms. Keep answers professional, concise, and helpful. Use bullet points for risks or summaries.";
-  const docContext = documentUploaded ? "A document has been uploaded. The user may ask about its risks, clauses, or summary. " : "No document uploaded yet. If they ask for a document summary or risks, remind them to upload a file first. ";
+  // Build prompt
+  const systemPrompt = "You are LegisCore AI, an expert legal associate for Nigerian law firms. Keep answers professional, concise, and helpful. Use bullet points if listing risks.";
+  const docContext = documentUploaded ? "A document has been uploaded. The user may ask about its risks or summary. " : "No document uploaded yet. ";
   const fullPrompt = systemPrompt + docContext + "User says: " + text;
 
   try {
     const response = await fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain' }, // Apps Script uses text/plain to bypass CORS preflight
+      headers: { 'Content-Type': 'text/plain' }, // Bypasses CORS preflight
       body: JSON.stringify({ prompt: fullPrompt })
     });
     
     const data = await response.json();
-    
-    // Remove typing indicator
     document.getElementById(typingId).remove();
     
     if (data.reply) {
-      // Convert simple markdown (bold/italics/newlines) to HTML
+      // Format markdown to HTML
       let formatted = data.reply
         .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
         .replace(/\*(.*?)\*/g, '<i>$1</i>')
-        .replace(/
-/g, '<br>');
+        .replace(/\n/g, '<br>');
       addMessage('ai', formatted);
     } else {
-      addMessage('ai', 'Sorry, I encountered an error processing that request.');
-      console.error("AI Error:", data);
+      addMessage('ai', 'Error: ' + (data.error || 'Could not get response.'));
     }
   } catch (error) {
     document.getElementById(typingId).remove();
-    addMessage('ai', 'Network error: Could not reach the AI backend. Please try again.');
+    addMessage('ai', 'Network error. Could not reach the AI backend.');
     console.error(error);
   }
 }
 
 sendBtn.addEventListener('click', handleSend);
-chatInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') handleSend();
-});
+chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
 </script>
 </body>
 </html>

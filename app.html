@@ -123,15 +123,12 @@ function simulateUpload(fileName) {
     dropSubtext.innerText = 'Ready for AI review';
     documentUploaded = true;
     
-    // Add AI message confirming upload
     addMessage('ai', `I have successfully processed <b>${fileName}</b>. I have extracted the key parties, dates, and obligations. What would you like me to do with this document?`);
   }, 2000);
 }
 
 fileInput.addEventListener('change', (e) => {
-  if (e.target.files.length > 0) {
-    simulateUpload(e.target.files[0].name);
-  }
+  if (e.target.files.length > 0) simulateUpload(e.target.files[0].name);
 });
 
 dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
@@ -139,12 +136,12 @@ dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'var
 dropZone.addEventListener('drop', (e) => {
   e.preventDefault();
   dropZone.style.borderColor = 'var(--border)';
-  if (e.dataTransfer.files.length > 0) {
-    simulateUpload(e.dataTransfer.files[0].name);
-  }
+  if (e.dataTransfer.files.length > 0) simulateUpload(e.dataTransfer.files[0].name);
 });
 
-// === AI CHAT SIMULATION ===
+// === REAL AI CHAT LOGIC (Connected to Google Apps Script) ===
+const API_URL = 'https://script.google.com/macros/s/AKfycbx1ZzD-ze1IjU2AvDxAyPrwWazL6rqSbPYlJnnKVaQIRe7T_za41yDWF4nzjmn0L3fSsA/exec';
+
 function addMessage(sender, text) {
   const msgDiv = document.createElement('div');
   msgDiv.className = `msg ${sender}`;
@@ -153,26 +150,7 @@ function addMessage(sender, text) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-function generateAIResponse(userText) {
-  const text = userText.toLowerCase();
-  
-  if (text.includes('summar') || text.includes('overview')) {
-    return "Here is a brief summary: This appears to be a standard Service Agreement. The term is 12 months with automatic renewal. The governing law is the State of Adamawa, Nigeria. Key risk: Clause 4.2 contains an unlimited liability clause which I recommend revising.";
-  } 
-  if (text.includes('risk') || text.includes('clause')) {
-    return "I have scanned the document for risks. I found 3 high-risk clauses:<br><br>1. <b>Unlimited Liability</b> (Section 4.2)<br>2. <b>Non-Compete</b> (Section 7.1) - Scope is overly broad.<br>3. <b>Termination</b> (Section 9) - Requires 90 days notice. <br><br>Would you like me to draft revised language for these?";
-  }
-  if (text.includes('draft') || text.includes('write')) {
-    return "I can draft that. Here is a standard non-disclosure clause you can insert: <br><br><i>'The Receiving Party agrees to hold all Confidential Information in strict confidence and not to disclose it to any third parties without prior written consent.'</i>";
-  }
-  if (text.includes('hello') || text.includes('hi')) {
-    return "Hello! I am your LegisCore AI Associate. You can upload a document on the left, or ask me general legal questions.";
-  }
-  
-  return "I have analyzed your request against the current document context. Based on Nigerian legal precedents, I recommend a closer review of the indemnification clauses. Is there a specific section you want me to focus on?";
-}
-
-function handleSend() {
+async function handleSend() {
   const text = chatInput.value.trim();
   if (!text) return;
   
@@ -185,39 +163,50 @@ function handleSend() {
   const typingDiv = document.createElement('div');
   typingDiv.className = 'msg ai';
   typingDiv.id = typingId;
-  typingDiv.innerHTML = '<i>LegisCore AI is thinking...</i>';
+  typingDiv.innerHTML = '<i>LegisCore AI is typing...</i>';
   chatMessages.appendChild(typingDiv);
   chatMessages.scrollTop = chatMessages.scrollHeight;
   
-  // Generate response after delay
-  setTimeout(() => {
+  // Build the prompt with a system persona
+  const systemPrompt = "You are LegisCore AI, an expert legal associate for Nigerian law firms. Keep answers professional, concise, and helpful. Use bullet points for risks or summaries.";
+  const docContext = documentUploaded ? "A document has been uploaded. The user may ask about its risks, clauses, or summary. " : "No document uploaded yet. If they ask for a document summary or risks, remind them to upload a file first. ";
+  const fullPrompt = systemPrompt + docContext + "User says: " + text;
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' }, // Apps Script uses text/plain to bypass CORS preflight
+      body: JSON.stringify({ prompt: fullPrompt })
+    });
+    
+    const data = await response.json();
+    
+    // Remove typing indicator
     document.getElementById(typingId).remove();
-    let response = generateAIResponse(text);
-    if (!documentUploaded && (text.includes('summar') || text.includes('risk') || text.includes('clause'))) {
-      response = "Please upload a document on the left first so I can analyze it for you. I cannot review a document I haven't seen.";
+    
+    if (data.reply) {
+      // Convert simple markdown (bold/italics/newlines) to HTML
+      let formatted = data.reply
+        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+        .replace(/\*(.*?)\*/g, '<i>$1</i>')
+        .replace(/
+/g, '<br>');
+      addMessage('ai', formatted);
+    } else {
+      addMessage('ai', 'Sorry, I encountered an error processing that request.');
+      console.error("AI Error:", data);
     }
-    addMessage('ai', response);
-  }, 1500);
+  } catch (error) {
+    document.getElementById(typingId).remove();
+    addMessage('ai', 'Network error: Could not reach the AI backend. Please try again.');
+    console.error(error);
+  }
 }
 
 sendBtn.addEventListener('click', handleSend);
 chatInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') handleSend();
 });
-</script>
-
-<script>
-async function clearAppCache() {
-  if ('caches' in window) {
-    const keys = await caches.keys();
-    for (let k of keys) await caches.delete(k);
-  }
-  if ('serviceWorker' in navigator) {
-    const regs = await navigator.serviceWorker.getRegistrations();
-    for (let reg of regs) await reg.unregister();
-  }
-  window.location.reload(true);
-}
 </script>
 </body>
 </html>

@@ -66,7 +66,7 @@ h1, h2, h3, .brand { font-family: 'Plus Jakarta Sans', sans-serif; }
 <div class="main">
   <div class="header">
     <h2>Workspace</h2>
-    <div class="status"><div class="dot"></div> AI Model Connected</div>
+    <div style="display:flex; align-items:center; gap:20px;"><button onclick="clearAppCache()" style="background:transparent; border:1px solid var(--border); color:#fff; padding:8px 16px; border-radius:8px; cursor:pointer; font-family:inherit;">Update App</button><div class="status"><div class="dot"></div> AI Model Connected</div></div>
   </div>
 
   <div class="dashboard">
@@ -204,6 +204,20 @@ sendBtn.addEventListener('click', handleSend);
 chatInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') handleSend();
 });
+</script>
+
+<script>
+async function clearAppCache() {
+  if ('caches' in window) {
+    const keys = await caches.keys();
+    for (let k of keys) await caches.delete(k);
+  }
+  if ('serviceWorker' in navigator) {
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for (let reg of regs) await reg.unregister();
+  }
+  window.location.reload(true);
+}
 </script>
 </body>
 </html>

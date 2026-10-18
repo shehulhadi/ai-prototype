@@ -50,7 +50,7 @@ footer { text-align: center; padding: 40px; border-top: 1px solid var(--border);
 
 <nav>
   <div class="brand"><span>Legis</span>Core AI</div>
-  <a href="app.html" class="btn btn-outline">Launch Demo</a>
+  <div style="display:flex; gap:12px;"><button onclick="clearAppCache()" class="btn btn-outline" style="border-color:rgba(255,255,255,0.2);">Update App</button><a href="app.html" class="btn btn-outline">Launch Demo</a></div>
 </nav>
 
 <section class="hero">
@@ -87,5 +87,19 @@ footer { text-align: center; padding: 40px; border-top: 1px solid var(--border);
   &copy; 2026 LegisCore AI. A concept by OProducts Studio.
 </footer>
 
+
+<script>
+async function clearAppCache() {
+  if ('caches' in window) {
+    const keys = await caches.keys();
+    for (let k of keys) await caches.delete(k);
+  }
+  if ('serviceWorker' in navigator) {
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for (let reg of regs) await reg.unregister();
+  }
+  window.location.reload(true);
+}
+</script>
 </body>
 </html>
